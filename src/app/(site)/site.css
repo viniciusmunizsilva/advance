@@ -405,8 +405,8 @@
 }
 #site .s-position__statement b { color: var(--s-blue); font-weight: 500; }
 #site .s-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--s-line); border: 1px solid var(--s-line); border-radius: 2px; overflow: hidden; }
-#site .s-stat { background: var(--s-paper); padding: 24px 22px; min-width: 0; }
-#site .s-stat .n { font-family: var(--font-serif); font-size: clamp(1.35rem, 0.9rem + 1.4vw, 1.85rem); line-height: 1.1; color: var(--s-blue-ink); overflow-wrap: break-word; }
+#site .s-stat { background: var(--s-paper); padding: 24px 20px; min-width: 0; }
+#site .s-stat .n { font-family: var(--font-serif); font-size: clamp(1.3rem, 0.8rem + 1.2vw, 1.75rem); line-height: 1.12; color: var(--s-blue-ink); overflow-wrap: break-word; }
 #site .s-stat .l { font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--s-ink-3); margin-top: 12px; line-height: 1.5; overflow-wrap: break-word; }
 
 /* ============================ SERVICES (editorial) ============================ */

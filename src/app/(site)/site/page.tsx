@@ -257,8 +257,8 @@ export default function SitePage() {
               </div>
               <div className="s-stats reveal d2">
                 <div className="s-stat">
-                  <div className="n">Mono e multicavidades</div>
-                  <div className="l">Peças técnicas e de consumo</div>
+                  <div className="n">Mono · Multi</div>
+                  <div className="l">Cavidades · peças técnicas e de consumo</div>
                 </div>
                 <div className="s-stat">
                   <div className="n">CAD / CAM</div>
