@@ -604,6 +604,9 @@ export type Database = {
     }
     Functions: {
       recalc_quote_totals: { Args: { p_quote_id: string }; Returns: undefined }
+      create_quote: { Args: { p: Json; items: Json }; Returns: string }
+      update_quote: { Args: { p_id: string; p: Json; items: Json }; Returns: string }
+      duplicate_quote: { Args: { p_source: string }; Returns: string }
     }
     Enums: {
       finance_status: "open" | "paid" | "overdue" | "cancelled"
