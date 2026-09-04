@@ -13,8 +13,18 @@ import {
   NAV_ITEMS,
 } from "./_data";
 
+// Origem para URLs absolutas (OG/canonical). Em produção usa o domínio real;
+// no preview da Vercel usa a URL de produção do projeto (ex.: advance-plum.vercel.app),
+// para a thumb do WhatsApp já funcionar antes do DNS apontar. Pode ser fixado
+// via NEXT_PUBLIC_SITE_ORIGIN.
+const OG_ORIGIN =
+  process.env.NEXT_PUBLIC_SITE_ORIGIN?.trim() ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : SITE_URL);
+
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(OG_ORIGIN),
   title: {
     default: "Advance Tecnologia — Moldes de Injeção Plástica | Ferramentaria",
     template: "%s · Advance Tecnologia",
@@ -42,13 +52,13 @@ export const metadata: Metadata = {
     siteName: "Advance Tecnologia",
     title: "Advance Tecnologia — Moldes de Injeção Plástica",
     description:
-      "Projeto, fabricação e manutenção de moldes de injeção plástica com precisão de engenharia. CAD/CAM, simulação de injeção e controle dimensional.",
+      "Moldes de injeção plástica com precisão em cada detalhe. Projeto em CAD/CAM, simulação de injeção, fabricação e manutenção de moldes.",
     images: [
       {
-        url: "/site/gallery/g01.jpeg",
-        width: 1279,
-        height: 959,
-        alt: "Molde de injeção multicavidades fabricado pela Advance Tecnologia",
+        url: "/site/og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Advance Tecnologia — moldes de injeção plástica com precisão em cada detalhe",
       },
     ],
   },
@@ -56,8 +66,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Advance Tecnologia — Moldes de Injeção Plástica",
     description:
-      "Ferramentaria de engenharia: projeto, fabricação e manutenção de moldes de injeção plástica.",
-    images: ["/site/gallery/g01.jpeg"],
+      "Moldes de injeção plástica com precisão em cada detalhe — projeto, fabricação e manutenção.",
+    images: ["/site/og.jpg"],
   },
   robots: { index: true, follow: true },
 };
@@ -176,7 +186,7 @@ export default function SitePage() {
               <h1 className="s-hero__title reveal d1">
                 Moldes de injeção plástica
                 <br />
-                <em>com precisão de engenharia</em>
+                <em>com precisão em cada detalhe</em>
                 <span className="thin">
                   Projeto, fabricação e manutenção de moldes — do briefing à
                   validação, sob um único controle técnico.
