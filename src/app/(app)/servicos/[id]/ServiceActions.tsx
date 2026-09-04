@@ -3,10 +3,10 @@
 import { useState, useRef, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Pencil, Trash2, RefreshCw, ChevronDown } from "lucide-react";
+import { Pencil, Trash2, RefreshCw, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { useToast } from "@/components/ui/toast";
-import { SERVICE_STATUS, type ServiceStatus } from "@/lib/domain";
+import { SERVICE_STATUS, SERVICE_KANBAN_ORDER, type ServiceStatus } from "@/lib/domain";
 import { changeServiceStatusAction, deleteServiceAction } from "../actions";
 
 const STATUSES = Object.keys(SERVICE_STATUS) as ServiceStatus[];
@@ -45,6 +45,14 @@ export function ServiceActions({
     });
   }
 
+  // Fluxo ordenado de etapas (exclui "cancelado", que é tratado à parte).
+  const stageIdx = SERVICE_KANBAN_ORDER.indexOf(status);
+  const prevStage = stageIdx > 0 ? SERVICE_KANBAN_ORDER[stageIdx - 1] : null;
+  const nextStage =
+    stageIdx >= 0 && stageIdx < SERVICE_KANBAN_ORDER.length - 1
+      ? SERVICE_KANBAN_ORDER[stageIdx + 1]
+      : null;
+
   function onDelete() {
     startTransition(async () => {
       const r = await deleteServiceAction(id);
@@ -60,6 +68,24 @@ export function ServiceActions({
       <Link href={`/servicos/${id}/editar`} className="btn btn-secondary">
         <Pencil aria-hidden /> <span>Editar</span>
       </Link>
+
+      <button
+        className="btn btn-secondary"
+        disabled={pending || !prevStage}
+        onClick={() => prevStage && setStatus(prevStage)}
+        title={prevStage ? `Voltar para “${SERVICE_STATUS[prevStage].label}”` : "Já está na primeira etapa"}
+      >
+        <ChevronLeft aria-hidden /> <span>Retroceder</span>
+      </button>
+      <button
+        className="btn btn-primary"
+        disabled={pending || !nextStage}
+        onClick={() => nextStage && setStatus(nextStage)}
+        title={nextStage ? `Avançar para “${SERVICE_STATUS[nextStage].label}”` : "Já está na última etapa"}
+      >
+        <span>Avançar etapa</span> <ChevronRight aria-hidden />
+      </button>
+
       <div ref={ref} style={{ position: "relative" }}>
         <button className="btn btn-secondary" onClick={() => setMenuOpen((v) => !v)} disabled={pending} aria-haspopup="menu" aria-expanded={menuOpen}>
           <RefreshCw aria-hidden /> <span>Alterar status</span> <ChevronDown aria-hidden />
