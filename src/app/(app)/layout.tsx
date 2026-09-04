@@ -21,8 +21,18 @@ export default async function AppLayout({
     user?.email?.split("@")[0] ||
     "Advance";
 
+  // Badge da sidebar: orçamentos aguardando resposta (enviados).
+  const { count: orcamentosAbertos } = await supabase
+    .from("quotes")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "sent");
+
   return (
-    <AppShell userName={userName} userEmail={user?.email ?? undefined}>
+    <AppShell
+      userName={userName}
+      userEmail={user?.email ?? undefined}
+      counts={{ orcamentosAbertos: orcamentosAbertos ?? 0 }}
+    >
       {children}
     </AppShell>
   );
