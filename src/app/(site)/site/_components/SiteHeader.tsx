@@ -1,12 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  NAV_ITEMS,
-  INTERNAL_URL,
-  CTA_ORCAMENTO,
-} from "../_data";
-import { WhatsAppIcon, ExternalIcon } from "./icons";
+import { NAV_ITEMS, CTA_ORCAMENTO } from "../_data";
+import { WhatsAppIcon } from "./icons";
 
 export default function SiteHeader() {
   const [stuck, setStuck] = useState(false);
@@ -70,14 +66,6 @@ export default function SiteHeader() {
           </nav>
 
           <div className="s-header__cta">
-            <a
-              href={INTERNAL_URL}
-              className="s-internal"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ExternalIcon /> Acesso interno
-            </a>
             <a href={CTA_ORCAMENTO} target="_blank" rel="noopener noreferrer" className="s-btn s-btn--primary s-btn--sm">
               Solicitar orçamento
             </a>
@@ -109,9 +97,6 @@ export default function SiteHeader() {
             <WhatsAppIcon /> Solicitar orçamento
           </a>
         </div>
-        <a href={INTERNAL_URL} target="_blank" rel="noopener noreferrer" className="s-mobile__internal">
-          <ExternalIcon /> Acesso interno · SaaS
-        </a>
       </div>
     </>
   );

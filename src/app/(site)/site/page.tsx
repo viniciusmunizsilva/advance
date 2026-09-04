@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import SiteHeader from "./_components/SiteHeader";
 import ScrollFx from "./_components/ScrollFx";
 import Gallery from "./_components/Gallery";
-import { WhatsAppIcon, ArrowIcon, ExternalIcon } from "./_components/icons";
+import { WhatsAppIcon, ArrowIcon } from "./_components/icons";
 import {
   CTA_ORCAMENTO,
   CTA_EQUIPE,
   EMAIL,
   PHONE_DISPLAY,
   LOCATION,
-  INTERNAL_URL,
   SITE_URL,
   NAV_ITEMS,
 } from "./_data";
@@ -471,14 +470,10 @@ export default function SitePage() {
               <a href={CTA_ORCAMENTO} target="_blank" rel="noopener noreferrer">WhatsApp · {PHONE_DISPLAY}</a>
               <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
               <p>{LOCATION}</p>
-              <a href={INTERNAL_URL} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 8 }}>
-                <ExternalIcon /> Acesso interno
-              </a>
             </div>
           </div>
           <div className="s-foot__bottom">
             <span>© {new Date().getFullYear()} Advance Tecnologia · Moldes de Injeção Plástica · {LOCATION}</span>
-            <a href={INTERNAL_URL} target="_blank" rel="noopener noreferrer">interno.advancetecnologia.com</a>
           </div>
         </div>
       </footer>
