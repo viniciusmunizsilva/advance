@@ -181,7 +181,8 @@ export default function SitePage() {
           <div className="s-hero__grid">
             <div className="s-hero__copy">
               <span className="s-hero__tag reveal">
-                <i /> Advance Tecnologia · Ferramentaria
+                <span className="s-hero__tag-dash" aria-hidden="true">—</span>{" "}
+                Advance Tecnologia · Ferramentaria
               </span>
               <h1 className="s-hero__title reveal d1">
                 Moldes de injeção plástica
@@ -302,11 +303,14 @@ export default function SitePage() {
                     <span className="s-svc__k">{s.k} — {s.tag}</span>
                     <h3 className="s-svc__title">{s.title}</h3>
                     <p className="s-svc__desc s-lead">{s.desc}</p>
-                    <ul className="s-svc__list">
-                      {s.tags.map((t) => (
-                        <li key={t}>{t}</li>
-                      ))}
-                    </ul>
+                    <div className="s-svc__specs">
+                      <span className="s-svc__specs-label">Capacidades</span>
+                      <ul className="s-svc__list">
+                        {s.tags.map((t) => (
+                          <li key={t}>{t}</li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </article>
               ))}
