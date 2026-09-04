@@ -25,6 +25,7 @@ export default async function AppLayout({
   const { count: orcamentosAbertos } = await supabase
     .from("quotes")
     .select("id", { count: "exact", head: true })
+    .eq("archived", false)
     .eq("status", "sent");
 
   return (

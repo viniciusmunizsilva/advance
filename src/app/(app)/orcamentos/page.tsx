@@ -78,7 +78,7 @@ export default async function OrcamentosPage(props: {
 
   // contagens por status (respeitando busca + cliente)
   const countPromises = TABS.map(async (t) => {
-    let b = supabase.from("quotes").select("id", { count: "exact", head: true });
+    let b = supabase.from("quotes").select("id", { count: "exact", head: true }).eq("archived", false);
     if (clientFilter) b = b.eq("client_id", clientFilter);
     if (orExpr) b = b.or(orExpr);
     if (t.key !== "all") b = b.eq("status", t.key as QuoteStatus);
@@ -93,7 +93,8 @@ export default async function OrcamentosPage(props: {
     .select(
       "id, number, total, status, created_at, validity_date, service_type, clients(trade_name, legal_name, city), molds(code, description)",
       { count: "exact" },
-    );
+    )
+    .eq("archived", false);
   if (clientFilter) listQuery = listQuery.eq("client_id", clientFilter);
   if (orExpr) listQuery = listQuery.or(orExpr);
   if (status !== "all") listQuery = listQuery.eq("status", status as QuoteStatus);

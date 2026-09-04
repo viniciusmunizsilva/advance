@@ -5,6 +5,7 @@ export type ServiceStatus = Database["public"]["Enums"]["service_status"];
 export type ServiceType = Database["public"]["Enums"]["service_type"];
 export type FinanceStatus = Database["public"]["Enums"]["finance_status"];
 export type MoldType = Database["public"]["Enums"]["mold_type"];
+export type OrderStatus = Database["public"]["Enums"]["order_status"];
 
 /** Classe de badge do DS (ver ds.css: .badge.<cls>). */
 export type BadgeClass =
@@ -41,6 +42,12 @@ export const FINANCE_STATUS: LabelMap<FinanceStatus> = {
   open: { label: "Em aberto", cls: "info" },
   paid: { label: "Pago", cls: "success" },
   overdue: { label: "Vencido", cls: "error" },
+  cancelled: { label: "Cancelado", cls: "neutral" },
+};
+
+export const ORDER_STATUS: LabelMap<OrderStatus> = {
+  open: { label: "Em aberto", cls: "info" },
+  completed: { label: "Concluído", cls: "success" },
   cancelled: { label: "Cancelado", cls: "neutral" },
 };
 

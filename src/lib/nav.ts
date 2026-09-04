@@ -9,6 +9,8 @@ import {
   ArrowUpFromLine,
   Building2,
   Settings,
+  ClipboardList,
+  Archive,
 } from "lucide-react";
 
 export type NavItem = {
@@ -38,6 +40,7 @@ export const NAV: NavGroup[] = [
     label: "Comercial",
     items: [
       { href: "/orcamentos", label: "Orçamentos", icon: FileText, countKey: "orcamentosAbertos" },
+      { href: "/pedidos", label: "Pedidos", icon: ClipboardList },
       { href: "/clientes", label: "Clientes", icon: Users },
       { href: "/moldes", label: "Moldes", icon: Box },
     ],
@@ -56,6 +59,9 @@ export const NAV: NavGroup[] = [
   },
   {
     label: null,
-    items: [{ href: "/configuracoes", label: "Configurações", icon: Settings }],
+    items: [
+      { href: "/arquivados", label: "Arquivados", icon: Archive },
+      { href: "/configuracoes", label: "Configurações", icon: Settings },
+    ],
   },
 ];

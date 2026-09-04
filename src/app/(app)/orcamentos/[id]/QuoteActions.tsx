@@ -3,10 +3,11 @@
 import { useState, useRef, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Copy, RefreshCw, Printer, Send, Wrench, Pencil, ChevronDown, FileText } from "lucide-react";
+import { Copy, RefreshCw, Printer, Send, Wrench, Pencil, ChevronDown, FileText, Archive, ArchiveRestore } from "lucide-react";
+import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { useToast } from "@/components/ui/toast";
 import { QUOTE_STATUS, type QuoteStatus } from "@/lib/domain";
-import { duplicateQuoteAction, changeQuoteStatusAction } from "../actions";
+import { duplicateQuoteAction, changeQuoteStatusAction, archiveQuoteAction } from "../actions";
 
 const STATUSES: QuoteStatus[] = ["draft", "sent", "approved", "rejected", "expired", "cancelled"];
 
@@ -14,15 +15,18 @@ export function QuoteActions({
   id,
   status,
   hasService,
+  archived,
 }: {
   id: string;
   status: QuoteStatus;
   hasService: boolean;
+  archived: boolean;
 }) {
   const router = useRouter();
   const { toast } = useToast();
   const [pending, startTransition] = useTransition();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [confirmingArchive, setConfirmingArchive] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,7 +52,17 @@ export function QuoteActions({
     startTransition(async () => {
       const r = await changeQuoteStatusAction(id, s);
       if (!r.ok) return toast(r.error, "error");
-      toast(`Status: ${QUOTE_STATUS[s].label}.`);
+      toast(s === "approved" ? "Aprovado — pedido gerado." : `Status: ${QUOTE_STATUS[s].label}.`);
+      router.refresh();
+    });
+  }
+
+  function toggleArchive() {
+    startTransition(async () => {
+      const r = await archiveQuoteAction(id, !archived);
+      if (!r.ok) { toast(r.error, "error"); setConfirmingArchive(false); return; }
+      toast(archived ? "Orçamento desarquivado." : "Orçamento arquivado.");
+      if (!archived) router.push("/orcamentos");
       router.refresh();
     });
   }
@@ -100,6 +114,21 @@ export function QuoteActions({
           <Send aria-hidden /> <span>Enviar</span>
         </button>
       )}
+
+      <button className="btn btn-secondary" onClick={() => (archived ? toggleArchive() : setConfirmingArchive(true))} disabled={pending}>
+        {archived ? <ArchiveRestore aria-hidden /> : <Archive aria-hidden />}
+        <span>{archived ? "Desarquivar" : "Arquivar"}</span>
+      </button>
+
+      <ConfirmDialog
+        open={confirmingArchive}
+        title="Arquivar orçamento"
+        description="Arquivar este orçamento? Ele sai das telas principais, mas não é excluído — fica em Arquivados."
+        confirmLabel="Arquivar"
+        pending={pending}
+        onConfirm={toggleArchive}
+        onCancel={() => setConfirmingArchive(false)}
+      />
     </>
   );
 }

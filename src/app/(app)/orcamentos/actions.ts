@@ -141,6 +141,32 @@ const STATUS_LABEL: Record<QuoteStatus, string> = {
   cancelled: "cancelado",
 };
 
+export async function archiveQuoteAction(
+  id: string,
+  archived: boolean,
+): Promise<ActionResult> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("quotes")
+    .update({ archived })
+    .eq("id", id)
+    .select("number")
+    .single();
+  if (error) return { ok: false, error: GENERIC_ERROR };
+
+  await logActivity({
+    entityType: "quote",
+    entityId: id,
+    action: archived ? "archived" : "unarchived",
+    summary: `Orçamento #${data?.number ?? ""} ${archived ? "arquivado" : "desarquivado"}`,
+  });
+
+  revalidatePath("/orcamentos");
+  revalidatePath(`/orcamentos/${id}`);
+  revalidatePath("/arquivados");
+  return { ok: true, data: undefined };
+}
+
 export async function changeQuoteStatusAction(
   id: string,
   status: QuoteStatus,
@@ -162,7 +188,67 @@ export async function changeQuoteStatusAction(
     summary: `Orçamento #${data?.number ?? ""} marcado como ${STATUS_LABEL[status]}`,
   });
 
+  // Orçamento aprovado → cria um Pedido (se ainda não existir), que alimenta o financeiro.
+  if (status === "approved") {
+    await createOrderFromQuote(id);
+  }
+
   revalidatePath("/orcamentos");
   revalidatePath(`/orcamentos/${id}`);
+  revalidatePath("/pedidos");
   return { ok: true, data: undefined };
+}
+
+/**
+ * Gera um Pedido a partir de um orçamento aprovado (idempotente) e uma conta a
+ * receber vinculada, que passa a somar no financeiro. Não duplica se já existir.
+ */
+export async function createOrderFromQuote(quoteId: string): Promise<void> {
+  const supabase = await createClient();
+
+  const { data: existing } = await supabase
+    .from("orders").select("id").eq("quote_id", quoteId).maybeSingle();
+  if (existing) return;
+
+  const { data: quote } = await supabase
+    .from("quotes")
+    .select("number, client_id, mold_id, total, validity_date")
+    .eq("id", quoteId)
+    .single();
+  if (!quote) return;
+
+  const { data: order, error: orderErr } = await supabase
+    .from("orders")
+    .insert({
+      number: "", // atribuído pelo trigger assign_order_number
+      quote_id: quoteId,
+      client_id: quote.client_id,
+      mold_id: quote.mold_id,
+      total: quote.total,
+      status: "open",
+    })
+    .select("id, number")
+    .single();
+  if (orderErr || !order) return;
+
+  // Conta a receber vinculada ao pedido (alimenta o financeiro).
+  const dueDate =
+    quote.validity_date ??
+    new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10);
+  await supabase.from("accounts_receivable").insert({
+    order_id: order.id,
+    client_id: quote.client_id,
+    quote_id: quoteId,
+    amount: quote.total,
+    due_date: dueDate,
+    status: "open",
+    description: `Pedido Nº ${order.number} — Orçamento #${quote.number}`,
+  });
+
+  await logActivity({
+    entityType: "order",
+    entityId: order.id,
+    action: "created",
+    summary: `Pedido Nº ${order.number} gerado do orçamento #${quote.number}`,
+  });
 }

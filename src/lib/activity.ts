@@ -4,6 +4,7 @@ export type EntityType =
   | "client"
   | "mold"
   | "quote"
+  | "order"
   | "service"
   | "receivable"
   | "payable"

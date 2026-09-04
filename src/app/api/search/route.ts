@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
   const [clients, molds, quotes, services] = await Promise.all([
     supabase.from("clients").select("id, legal_name, trade_name, city").or(`legal_name.ilike.${term},trade_name.ilike.${term},document.ilike.${term}`).limit(5),
     supabase.from("molds").select("id, code, description").or(`code.ilike.${term},description.ilike.${term}`).limit(5),
-    supabase.from("quotes").select("id, number, total, status").ilike("number", term).limit(5),
+    supabase.from("quotes").select("id, number, total, status").eq("archived", false).ilike("number", term).limit(5),
     supabase.from("services").select("id, title, status").ilike("title", term).limit(5),
   ]);
 

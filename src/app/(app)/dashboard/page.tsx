@@ -24,11 +24,11 @@ export default async function DashboardPage() {
   ] = await Promise.all([
     supabase.from("v_accounts_receivable").select("amount, effective_status").in("effective_status", ["open", "overdue"]),
     supabase.from("v_accounts_payable").select("amount, effective_status").in("effective_status", ["open", "overdue"]),
-    supabase.from("quotes").select("id", { count: "exact", head: true }).gte("created_at", monthStart),
+    supabase.from("quotes").select("id", { count: "exact", head: true }).eq("archived", false).gte("created_at", monthStart),
     supabase.from("services").select("id", { count: "exact", head: true }).in("status", ACTIVE_SERVICE),
-    supabase.from("quotes").select("id, number, total, status, created_at, clients(legal_name, trade_name)").order("created_at", { ascending: false }).limit(6),
+    supabase.from("quotes").select("id, number, total, status, created_at, clients(legal_name, trade_name)").eq("archived", false).order("created_at", { ascending: false }).limit(6),
     supabase.from("services").select("id, title, status, expected_delivery_date, clients(legal_name, trade_name)").in("status", ACTIVE_SERVICE).order("expected_delivery_date", { ascending: true, nullsFirst: false }).limit(6),
-    supabase.from("quotes").select("id, number, total, created_at, clients(legal_name, trade_name)").eq("status", "sent").order("created_at", { ascending: false }).limit(6),
+    supabase.from("quotes").select("id, number, total, created_at, clients(legal_name, trade_name)").eq("archived", false).eq("status", "sent").order("created_at", { ascending: false }).limit(6),
     supabase.from("v_accounts_receivable").select("id, description, amount, due_date, effective_status, clients(legal_name, trade_name)").in("effective_status", ["open", "overdue"]).order("due_date", { ascending: true }).limit(6),
   ]);
 

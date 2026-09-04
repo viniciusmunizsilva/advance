@@ -60,7 +60,7 @@ export default async function OrcamentoDetalhePage(props: {
         title={`Orçamento #${quote.number}`}
         breadcrumb={[{ label: "Orçamentos", href: "/orcamentos" }, { label: `#${quote.number}` }]}
         subtitle={subLabel || undefined}
-        actions={<QuoteActions id={id} status={quote.status} hasService={hasService} />}
+        actions={<QuoteActions id={id} status={quote.status} hasService={hasService} archived={quote.archived} />}
       />
       <div style={{ marginTop: -14, marginBottom: 22 }}>
         <span className={`badge ${st.cls}`}>{st.label}</span>

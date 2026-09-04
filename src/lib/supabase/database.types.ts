@@ -70,6 +70,7 @@ export type Database = {
           due_date: string
           id: string
           notes: string | null
+          order_id: string | null
           paid_date: string | null
           quote_id: string | null
           status: Database["public"]["Enums"]["finance_status"]
@@ -83,6 +84,7 @@ export type Database = {
           due_date: string
           id?: string
           notes?: string | null
+          order_id?: string | null
           paid_date?: string | null
           quote_id?: string | null
           status?: Database["public"]["Enums"]["finance_status"]
@@ -96,6 +98,7 @@ export type Database = {
           due_date?: string
           id?: string
           notes?: string | null
+          order_id?: string | null
           paid_date?: string | null
           quote_id?: string | null
           status?: Database["public"]["Enums"]["finance_status"]
@@ -107,6 +110,13 @@ export type Database = {
             columns: ["client_id"]
             isOneToOne: false
             referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "accounts_receivable_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
             referencedColumns: ["id"]
           },
           {
@@ -294,6 +304,70 @@ export type Database = {
           },
         ]
       }
+      orders: {
+        Row: {
+          archived: boolean
+          client_id: string
+          created_at: string
+          id: string
+          mold_id: string | null
+          notes: string | null
+          number: string
+          quote_id: string | null
+          status: Database["public"]["Enums"]["order_status"]
+          total: number
+          updated_at: string
+        }
+        Insert: {
+          archived?: boolean
+          client_id: string
+          created_at?: string
+          id?: string
+          mold_id?: string | null
+          notes?: string | null
+          number: string
+          quote_id?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          total?: number
+          updated_at?: string
+        }
+        Update: {
+          archived?: boolean
+          client_id?: string
+          created_at?: string
+          id?: string
+          mold_id?: string | null
+          notes?: string | null
+          number?: string
+          quote_id?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          total?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_mold_id_fkey"
+            columns: ["mold_id"]
+            isOneToOne: false
+            referencedRelation: "molds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "orders_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -361,21 +435,22 @@ export type Database = {
       }
       quotes: {
         Row: {
+          archived: boolean
           client_id: string
           created_at: string
           created_by: string | null
           deadline: string | null
           description: string | null
           discount: number
+          freight: string | null
           id: string
           mold_id: string | null
           notes: string | null
           number: string
           payment_terms: string | null
           responsible: string | null
-          freight: string | null
-          share_token: string
           service_type: Database["public"]["Enums"]["service_type"] | null
+          share_token: string
           status: Database["public"]["Enums"]["quote_status"]
           subtotal: number
           total: number
@@ -383,21 +458,22 @@ export type Database = {
           validity_date: string | null
         }
         Insert: {
+          archived?: boolean
           client_id: string
           created_at?: string
           created_by?: string | null
           deadline?: string | null
           description?: string | null
           discount?: number
+          freight?: string | null
           id?: string
           mold_id?: string | null
           notes?: string | null
           number: string
           payment_terms?: string | null
           responsible?: string | null
-          freight?: string | null
-          share_token?: string
           service_type?: Database["public"]["Enums"]["service_type"] | null
+          share_token?: string
           status?: Database["public"]["Enums"]["quote_status"]
           subtotal?: number
           total?: number
@@ -405,21 +481,22 @@ export type Database = {
           validity_date?: string | null
         }
         Update: {
+          archived?: boolean
           client_id?: string
           created_at?: string
           created_by?: string | null
           deadline?: string | null
           description?: string | null
           discount?: number
+          freight?: string | null
           id?: string
           mold_id?: string | null
           notes?: string | null
           number?: string
           payment_terms?: string | null
           responsible?: string | null
-          freight?: string | null
-          share_token?: string
           service_type?: Database["public"]["Enums"]["service_type"] | null
+          share_token?: string
           status?: Database["public"]["Enums"]["quote_status"]
           subtotal?: number
           total?: number
@@ -612,16 +689,20 @@ export type Database = {
       }
     }
     Functions: {
-      recalc_quote_totals: { Args: { p_quote_id: string }; Returns: undefined }
-      create_quote: { Args: { p: Json; items: Json }; Returns: string }
-      update_quote: { Args: { p_id: string; p: Json; items: Json }; Returns: string }
+      approve_public_quote: { Args: { p_token: string }; Returns: boolean }
+      create_quote: { Args: { items: Json; p: Json }; Returns: string }
       duplicate_quote: { Args: { p_source: string }; Returns: string }
       get_public_quote: { Args: { p_token: string }; Returns: Json }
-      approve_public_quote: { Args: { p_token: string }; Returns: boolean }
+      recalc_quote_totals: { Args: { p_quote_id: string }; Returns: undefined }
+      update_quote: {
+        Args: { items: Json; p: Json; p_id: string }
+        Returns: string
+      }
     }
     Enums: {
       finance_status: "open" | "paid" | "overdue" | "cancelled"
       mold_type: "single_cavity" | "multi_cavity"
+      order_status: "open" | "completed" | "cancelled"
       quote_status:
         | "draft"
         | "sent"
@@ -773,6 +854,7 @@ export const Constants = {
     Enums: {
       finance_status: ["open", "paid", "overdue", "cancelled"],
       mold_type: ["single_cavity", "multi_cavity"],
+      order_status: ["open", "completed", "cancelled"],
       quote_status: [
         "draft",
         "sent",
