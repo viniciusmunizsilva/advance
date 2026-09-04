@@ -7,6 +7,7 @@ import { Topbar } from "./Topbar";
 type Props = {
   children: React.ReactNode;
   userName?: string;
+  userEmail?: string;
   counts?: Record<string, number>;
 };
 
@@ -15,7 +16,7 @@ type Props = {
  * Gerencia o estado off-canvas da sidebar no mobile.
  * A busca global (⌘K) será plugada em fase posterior.
  */
-export function AppShell({ children, userName, counts }: Props) {
+export function AppShell({ children, userName, userEmail, counts }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -37,6 +38,7 @@ export function AppShell({ children, userName, counts }: Props) {
             /* ⌘K — fase posterior */
           }}
           userName={userName}
+          userEmail={userEmail}
         />
         <div className="page-scroll">{children}</div>
       </div>

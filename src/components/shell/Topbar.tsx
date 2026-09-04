@@ -2,15 +2,16 @@
 
 import { Menu, Search, Plus } from "lucide-react";
 import Link from "next/link";
-import { initials } from "@/lib/format";
+import { UserMenu } from "./UserMenu";
 
 type Props = {
   onMenu: () => void;
   onSearch: () => void;
   userName?: string;
+  userEmail?: string;
 };
 
-export function Topbar({ onMenu, onSearch, userName = "Advance" }: Props) {
+export function Topbar({ onMenu, onSearch, userName = "Advance", userEmail }: Props) {
   return (
     <header className="topbar">
       <button
@@ -32,9 +33,7 @@ export function Topbar({ onMenu, onSearch, userName = "Advance" }: Props) {
           <Plus aria-hidden />
           <span>Novo orçamento</span>
         </Link>
-        <div className="avatar" title={userName}>
-          {initials(userName)}
-        </div>
+        <UserMenu userName={userName} userEmail={userEmail} />
       </div>
     </header>
   );

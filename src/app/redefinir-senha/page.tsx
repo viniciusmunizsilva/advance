@@ -2,26 +2,33 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { AuthCard } from "@/components/auth/AuthCard";
 
-export default function LoginPage() {
+export default function ResetPasswordPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    if (password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
+    if (password !== confirm) {
+      setError("As senhas não coincidem.");
+      return;
+    }
     setLoading(true);
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
     if (error) {
-      setError("E-mail ou senha inválidos. Tente novamente.");
+      setError("Não foi possível redefinir a senha. O link pode ter expirado.");
       return;
     }
     router.push("/dashboard");
@@ -29,49 +36,36 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthCard title="Entrar no sistema" subtitle="Acesso interno · Advance Tecnologia">
+    <AuthCard title="Definir nova senha" subtitle="Escolha uma senha para sua conta">
       <form onSubmit={onSubmit}>
         <div style={{ marginBottom: 16 }}>
-          <label className="form-label" htmlFor="email">
-            E-mail
+          <label className="form-label" htmlFor="password">
+            Nova senha
           </label>
-          <input
-            id="email"
-            type="email"
-            className="input"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div style={{ marginBottom: 8 }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "baseline",
-            }}
-          >
-            <label className="form-label" htmlFor="password">
-              Senha
-            </label>
-            <Link
-              href="/recuperar-senha"
-              style={{ fontSize: 12.5, fontWeight: 500 }}
-            >
-              Esqueci minha senha
-            </Link>
-          </div>
           <input
             id="password"
             type="password"
             className="input"
-            autoComplete="current-password"
+            autoComplete="new-password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+          <p className="form-hint">Mínimo de 8 caracteres.</p>
+        </div>
+
+        <div style={{ marginBottom: 8 }}>
+          <label className="form-label" htmlFor="confirm">
+            Confirmar senha
+          </label>
+          <input
+            id="confirm"
+            type="password"
+            className="input"
+            autoComplete="new-password"
+            required
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
           />
         </div>
 
@@ -87,7 +81,7 @@ export default function LoginPage() {
           disabled={loading}
           style={{ marginTop: 12 }}
         >
-          {loading ? "Entrando…" : "Entrar"}
+          {loading ? "Salvando…" : "Salvar nova senha"}
         </button>
       </form>
     </AuthCard>

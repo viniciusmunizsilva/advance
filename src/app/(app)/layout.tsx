@@ -21,5 +21,9 @@ export default async function AppLayout({
     user?.email?.split("@")[0] ||
     "Advance";
 
-  return <AppShell userName={userName}>{children}</AppShell>;
+  return (
+    <AppShell userName={userName} userEmail={user?.email ?? undefined}>
+      {children}
+    </AppShell>
+  );
 }
