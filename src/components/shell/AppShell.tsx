@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
+import { CommandPalette } from "./CommandPalette";
 import { ToastProvider } from "@/components/ui/toast";
 
 type Props = {
@@ -19,6 +20,18 @@ type Props = {
  */
 export function AppShell({ children, userName, userEmail, counts }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [cmdkOpen, setCmdkOpen] = useState(false);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setCmdkOpen((v) => !v);
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <ToastProvider>
@@ -36,15 +49,14 @@ export function AppShell({ children, userName, userEmail, counts }: Props) {
         <div className="main">
           <Topbar
             onMenu={() => setMenuOpen(true)}
-            onSearch={() => {
-              /* ⌘K — fase posterior */
-            }}
+            onSearch={() => setCmdkOpen(true)}
             userName={userName}
             userEmail={userEmail}
           />
           <div className="page-scroll">{children}</div>
         </div>
       </div>
+      {cmdkOpen && <CommandPalette onClose={() => setCmdkOpen(false)} />}
     </ToastProvider>
   );
 }
