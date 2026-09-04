@@ -374,6 +374,7 @@ export type Database = {
           payment_terms: string | null
           responsible: string | null
           freight: string | null
+          share_token: string
           service_type: Database["public"]["Enums"]["service_type"] | null
           status: Database["public"]["Enums"]["quote_status"]
           subtotal: number
@@ -395,6 +396,7 @@ export type Database = {
           payment_terms?: string | null
           responsible?: string | null
           freight?: string | null
+          share_token?: string
           service_type?: Database["public"]["Enums"]["service_type"] | null
           status?: Database["public"]["Enums"]["quote_status"]
           subtotal?: number
@@ -416,6 +418,7 @@ export type Database = {
           payment_terms?: string | null
           responsible?: string | null
           freight?: string | null
+          share_token?: string
           service_type?: Database["public"]["Enums"]["service_type"] | null
           status?: Database["public"]["Enums"]["quote_status"]
           subtotal?: number
@@ -613,6 +616,8 @@ export type Database = {
       create_quote: { Args: { p: Json; items: Json }; Returns: string }
       update_quote: { Args: { p_id: string; p: Json; items: Json }; Returns: string }
       duplicate_quote: { Args: { p_source: string }; Returns: string }
+      get_public_quote: { Args: { p_token: string }; Returns: Json }
+      approve_public_quote: { Args: { p_token: string }; Returns: boolean }
     }
     Enums: {
       finance_status: "open" | "paid" | "overdue" | "cancelled"

@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { HistoryTimeline } from "@/components/ui/HistoryTimeline";
 import { fmtBRLc, fmtDate } from "@/lib/format";
 import { QUOTE_STATUS, SERVICE_TYPE } from "@/lib/domain";
 import { QuoteActions } from "./QuoteActions";
+import { ShareLink } from "./ShareLink";
 
 export default async function OrcamentoDetalhePage(props: {
   params: Promise<{ id: string }>;
@@ -25,6 +27,11 @@ export default async function OrcamentoDetalhePage(props: {
     supabase.from("services").select("id").eq("quote_id", id).maybeSingle(),
     supabase.from("activity_logs").select("id, summary, action, actor_name, created_at").eq("entity_type", "quote").eq("entity_id", id).order("created_at", { ascending: false }).limit(20),
   ]);
+
+  const h = await headers();
+  const host = h.get("host") ?? "";
+  const proto = h.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
+  const shareUrl = `${proto}://${host}/proposta/${quote.share_token}`;
 
   const client = quote.clients as { id: string; legal_name: string; trade_name: string | null; document: string | null; city: string | null; contact_name: string | null } | null;
   const mold = quote.molds as { id: string; code: string; description: string | null; cavities: number | null } | null;
@@ -115,6 +122,8 @@ export default async function OrcamentoDetalhePage(props: {
 
         {/* Sidebar */}
         <div className="stack">
+          <ShareLink url={shareUrl} number={quote.number} />
+
           <div className="card">
             <div className="card-head"><h3>Progresso</h3></div>
             <div className="card-body">

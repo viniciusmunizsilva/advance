@@ -38,6 +38,7 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const isPublicRoute =
+    pathname.startsWith("/proposta") ||
     pathname.startsWith("/login") ||
     pathname.startsWith("/recuperar-senha") ||
     pathname.startsWith("/redefinir-senha") ||
