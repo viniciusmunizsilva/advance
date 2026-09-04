@@ -29,7 +29,7 @@
 .page-scroll::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 80% at 50% 0%, transparent 55%, var(--bg) 100%); }
 .page-scroll > * { position: relative; }
 .topbar { height: 60px; background: rgba(255, 255, 255, .85); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; padding: 0 28px; position: sticky; top: 0; z-index: 30; }
-.search-trigger { flex: 1; max-width: 440px; display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 12px; background: var(--neutral-100); border: 1px solid transparent; border-radius: var(--radius-md); color: var(--text-tertiary); font-size: 13.5px; transition: border-color .12s, background .12s; cursor: text; }
+.search-trigger { flex: 1; min-width: 0; max-width: 440px; display: flex; align-items: center; gap: 10px; height: 38px; padding: 0 12px; background: var(--neutral-100); border: 1px solid transparent; border-radius: var(--radius-md); color: var(--text-tertiary); font-size: 13.5px; transition: border-color .12s, background .12s; cursor: text; }
 .search-trigger:hover { background: var(--neutral-50); border-color: var(--border); }
 .search-trigger svg { width: 16px; height: 16px; flex-shrink: 0; }
 .search-trigger span:not(.kbd) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -280,4 +280,7 @@ textarea.input { height: auto; padding: 10px 12px; line-height: 1.5; resize: ver
   .kpi-grid { grid-template-columns: 1fr; }
   .topbar { padding: 0 16px; }
   .search-trigger .kbd { display: none; }
+  /* Evita overflow horizontal da topbar no celular: o botão de novo
+     orçamento continua acessível no page-head e na sidebar. */
+  .topbar-new-quote { display: none; }
 }

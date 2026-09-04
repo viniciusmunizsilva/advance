@@ -29,7 +29,7 @@ export function Topbar({ onMenu, onSearch, userName = "Advance", userEmail }: Pr
       </button>
 
       <div className="topbar-right">
-        <Link href="/orcamentos/novo" className="btn btn-primary btn-sm">
+        <Link href="/orcamentos/novo" className="btn btn-primary btn-sm topbar-new-quote">
           <Plus aria-hidden />
           <span>Novo orçamento</span>
         </Link>
