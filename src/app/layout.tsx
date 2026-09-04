@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Advance — Sistema de Gestão",
+  title: "Advance | Sistema de Gestão",
   description:
     "Sistema interno de gestão da Advance Tecnologia — clientes, moldes, orçamentos, serviços e financeiro.",
 };

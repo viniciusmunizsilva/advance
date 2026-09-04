@@ -26,7 +26,7 @@ const OG_ORIGIN =
 export const metadata: Metadata = {
   metadataBase: new URL(OG_ORIGIN),
   title: {
-    default: "Advance Tecnologia — Moldes de Injeção Plástica | Ferramentaria",
+    default: "Advance Tecnologia | Moldes de Injeção Plástica",
     template: "%s · Advance Tecnologia",
   },
   description:
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: SITE_URL,
     siteName: "Advance Tecnologia",
-    title: "Advance Tecnologia — Moldes de Injeção Plástica",
+    title: "Advance Tecnologia | Moldes de Injeção Plástica",
     description:
       "Moldes de injeção plástica com precisão em cada detalhe. Projeto em CAD/CAM, simulação de injeção, fabricação e manutenção de moldes.",
     images: [
@@ -64,7 +64,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Advance Tecnologia — Moldes de Injeção Plástica",
+    title: "Advance Tecnologia | Moldes de Injeção Plástica",
     description:
       "Moldes de injeção plástica com precisão em cada detalhe — projeto, fabricação e manutenção.",
     images: ["/site/og.jpg"],
