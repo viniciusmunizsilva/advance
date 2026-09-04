@@ -233,9 +233,6 @@ export default function SitePage() {
                   <span className="bar" />
                   <span>EM OPERAÇÃO</span>
                 </span>
-                <span className="s-hero__spec" aria-hidden="true">
-                  Aço ferramenta · Multicavidades
-                </span>
                 <span className="s-tick tl" aria-hidden="true" />
                 <span className="s-tick tr" aria-hidden="true" />
                 <span className="s-tick bl" aria-hidden="true" />
