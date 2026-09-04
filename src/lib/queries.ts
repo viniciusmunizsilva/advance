@@ -16,6 +16,18 @@ export async function getClientOptions(): Promise<ClientOption[]> {
   }));
 }
 
+export type SupplierOption = { id: string; label: string };
+
+/** Fornecedores para selects. */
+export async function getSupplierOptions(): Promise<SupplierOption[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("suppliers")
+    .select("id, company_name")
+    .order("company_name", { ascending: true });
+  return (data ?? []).map((s) => ({ id: s.id, label: s.company_name }));
+}
+
 /** Moldes para selects (com client_id para filtrar por cliente no front). */
 export async function getMoldOptions(): Promise<MoldOption[]> {
   const supabase = await createClient();
