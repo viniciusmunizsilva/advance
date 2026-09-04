@@ -35,6 +35,19 @@ export function fmtDateLong(date: Date = new Date()): string {
   });
 }
 
+/** Timestamp ISO → "03/09/2026 14:32" (America/Sao_Paulo). */
+export function fmtDateTime(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "America/Sao_Paulo",
+  });
+}
+
 /** Iniciais para avatar (ex.: "Advance Tecnologia" → "AT"). */
 export function initials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);

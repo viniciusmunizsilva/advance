@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
+import { ToastProvider } from "@/components/ui/toast";
 
 type Props = {
   children: React.ReactNode;
@@ -20,28 +21,30 @@ export function AppShell({ children, userName, userEmail, counts }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="app">
-      <Sidebar
-        open={menuOpen}
-        onNavigate={() => setMenuOpen(false)}
-        counts={counts}
-      />
-      <div
-        className={`scrim${menuOpen ? " open" : ""}`}
-        onClick={() => setMenuOpen(false)}
-        aria-hidden
-      />
-      <div className="main">
-        <Topbar
-          onMenu={() => setMenuOpen(true)}
-          onSearch={() => {
-            /* ⌘K — fase posterior */
-          }}
-          userName={userName}
-          userEmail={userEmail}
+    <ToastProvider>
+      <div className="app">
+        <Sidebar
+          open={menuOpen}
+          onNavigate={() => setMenuOpen(false)}
+          counts={counts}
         />
-        <div className="page-scroll">{children}</div>
+        <div
+          className={`scrim${menuOpen ? " open" : ""}`}
+          onClick={() => setMenuOpen(false)}
+          aria-hidden
+        />
+        <div className="main">
+          <Topbar
+            onMenu={() => setMenuOpen(true)}
+            onSearch={() => {
+              /* ⌘K — fase posterior */
+            }}
+            userName={userName}
+            userEmail={userEmail}
+          />
+          <div className="page-scroll">{children}</div>
+        </div>
       </div>
-    </div>
+    </ToastProvider>
   );
 }
