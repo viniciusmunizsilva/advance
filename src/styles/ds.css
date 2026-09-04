@@ -259,6 +259,10 @@ textarea.input { height: auto; padding: 10px 12px; line-height: 1.5; resize: ver
 
 /* ---------- responsive ---------- */
 .menu-btn { display: none; }
+/* Scrim do menu mobile: SEMPRE fora do fluxo da grid (fixed) para não ocupar
+   uma coluna de .app no desktop. Só aparece quando o menu é aberto. */
+.scrim { position: fixed; inset: 0; background: rgba(14, 17, 22, .4); z-index: 55; display: none; }
+.scrim.open { display: block; }
 @media (max-width: 1080px) {
   .app { grid-template-columns: 1fr; }
   .sidebar { position: fixed; left: 0; top: 0; z-index: 60; width: 248px; transform: translateX(-100%); transition: transform .2s; }
@@ -266,8 +270,10 @@ textarea.input { height: auto; padding: 10px 12px; line-height: 1.5; resize: ver
   .menu-btn { display: inline-flex; }
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .dash-grid, .detail-grid { grid-template-columns: 1fr; }
-  .scrim { position: fixed; inset: 0; background: rgba(14, 17, 22, .4); z-index: 55; display: none; }
-  .scrim.open { display: block; }
+}
+@media (min-width: 1081px) {
+  /* Garantia extra: no desktop o scrim nunca participa do layout. */
+  .scrim { display: none !important; }
 }
 @media (max-width: 640px) {
   .page { padding: 20px 18px 48px; }
