@@ -2,17 +2,17 @@ import Link from "next/link";
 import { Users } from "lucide-react";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { getClientOptions, getMoldOptions } from "@/lib/queries";
+import { getClientsData, getMoldsData, getCompanyDoc } from "@/lib/queries";
 import { QuoteForm } from "../QuoteForm";
 
 export default async function NovoOrcamentoPage(props: {
   searchParams: Promise<{ client?: string; mold?: string }>;
 }) {
   const { client, mold } = await props.searchParams;
-  const [clients, molds] = await Promise.all([getClientOptions(), getMoldOptions()]);
+  const [clients, molds, company] = await Promise.all([getClientsData(), getMoldsData(), getCompanyDoc()]);
 
   return (
-    <div className="page">
+    <div className="page" style={{ maxWidth: "none" }}>
       <PageHeader
         title="Novo orçamento"
         breadcrumb={[{ label: "Orçamentos", href: "/orcamentos" }, { label: "Novo" }]}
@@ -29,7 +29,7 @@ export default async function NovoOrcamentoPage(props: {
           </div>
         </div>
       ) : (
-        <QuoteForm clients={clients} molds={molds} defaultClientId={client} defaultMoldId={mold} />
+        <QuoteForm clients={clients} molds={molds} company={company} defaultClientId={client} defaultMoldId={mold} />
       )}
     </div>
   );

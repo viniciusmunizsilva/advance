@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Copy, RefreshCw, Printer, Send, Wrench, Pencil, ChevronDown } from "lucide-react";
+import { Copy, RefreshCw, Printer, Send, Wrench, Pencil, ChevronDown, FileText } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { QUOTE_STATUS, type QuoteStatus } from "@/lib/domain";
 import { duplicateQuoteAction, changeQuoteStatusAction } from "../actions";
@@ -78,6 +78,9 @@ export function QuoteActions({
         )}
       </div>
 
+      <Link href={`/orcamentos/${id}/documento`} className="btn btn-secondary">
+        <FileText aria-hidden /> <span>Ver documento</span>
+      </Link>
       <Link href={`/orcamentos/${id}/pdf`} target="_blank" className="btn btn-secondary">
         <Printer aria-hidden /> <span>Gerar PDF</span>
       </Link>

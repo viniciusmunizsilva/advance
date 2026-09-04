@@ -372,6 +372,8 @@ export type Database = {
           notes: string | null
           number: string
           payment_terms: string | null
+          responsible: string | null
+          freight: string | null
           service_type: Database["public"]["Enums"]["service_type"] | null
           status: Database["public"]["Enums"]["quote_status"]
           subtotal: number
@@ -391,6 +393,8 @@ export type Database = {
           notes?: string | null
           number: string
           payment_terms?: string | null
+          responsible?: string | null
+          freight?: string | null
           service_type?: Database["public"]["Enums"]["service_type"] | null
           status?: Database["public"]["Enums"]["quote_status"]
           subtotal?: number
@@ -410,6 +414,8 @@ export type Database = {
           notes?: string | null
           number?: string
           payment_terms?: string | null
+          responsible?: string | null
+          freight?: string | null
           service_type?: Database["public"]["Enums"]["service_type"] | null
           status?: Database["public"]["Enums"]["quote_status"]
           subtotal?: number

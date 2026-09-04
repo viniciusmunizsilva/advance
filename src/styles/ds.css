@@ -234,6 +234,29 @@ textarea.input { height: auto; padding: 10px 12px; line-height: 1.5; resize: ver
 .divider-v { width: 1px; height: 22px; background: var(--border); }
 .tag-svc { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: var(--radius-sm); background: var(--neutral-100); color: var(--text-secondary); font-size: 12px; font-weight: 500; }
 
+/* ---------- Quote editor + preview ---------- */
+.qedit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.qedit-editor { min-width: 0; display: flex; flex-direction: column; gap: 20px; }
+.qedit-preview { position: sticky; top: 84px; }
+.qedit-preview-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.qedit-preview-bar .hint { margin-right: auto; }
+.qedit-stage { background: var(--neutral-100); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; overflow: auto; height: calc(100vh - 180px); display: flex; justify-content: center; }
+.qedit-stage .qdoc-page { box-shadow: var(--shadow-md); flex-shrink: 0; }
+.qedit-viewtoggle { display: none; }
+
+.qedit-fs-overlay { position: fixed; inset: 0; background: rgba(14,17,22,.55); z-index: 150; overflow: auto; padding: 32px; }
+.qedit-fs-close { position: fixed; top: 20px; right: 24px; z-index: 160; }
+.qedit-fs-overlay .qdoc-page { margin: 0 auto; box-shadow: var(--shadow-lg); }
+
+@media (max-width: 1200px) {
+  .qedit { grid-template-columns: 1fr; }
+  .qedit-viewtoggle { display: inline-flex; }
+  .qedit[data-view="editor"] .qedit-preview { display: none; }
+  .qedit[data-view="preview"] .qedit-editor { display: none; }
+  .qedit-preview { position: static; }
+  .qedit-stage { height: auto; max-height: none; }
+}
+
 /* ---------- responsive ---------- */
 .menu-btn { display: none; }
 @media (max-width: 1080px) {
