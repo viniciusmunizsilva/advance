@@ -260,21 +260,21 @@
 #site .s-hero__title {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(2.7rem, 6vw, 4.9rem);
-  line-height: 1.02;
+  font-size: clamp(2.5rem, 4.4vw, 3.6rem);
+  line-height: 1.04;
   letter-spacing: -0.015em;
-  margin: 0 0 24px;
+  margin: 0 0 22px;
 }
 #site .s-hero__title em { font-style: italic; color: var(--s-blue); }
-#site .s-hero__title .thin { display: block; color: var(--s-ink-3); font-size: 0.42em; font-family: var(--font-sans); font-weight: 400; letter-spacing: 0.02em; margin-top: 18px; line-height: 1.4; }
+#site .s-hero__title .thin { display: block; color: var(--s-ink-3); font-size: 0.4em; font-family: var(--font-sans); font-weight: 400; letter-spacing: 0.02em; margin-top: 16px; line-height: 1.45; }
 #site .s-hero__desc { max-width: 500px; margin: 0 0 36px; }
 #site .s-hero__btns { display: flex; flex-wrap: wrap; gap: 14px; }
 #site .s-hero__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 28px 40px;
-  margin-top: 44px;
-  padding-top: 30px;
+  gap: 22px 40px;
+  margin-top: 32px;
+  padding-top: 24px;
   border-top: 1px solid var(--s-line);
 }
 #site .s-hero__meta div .n {
@@ -292,6 +292,22 @@
   color: var(--s-ink-3);
   margin-top: 8px;
   display: block;
+}
+
+/* Desktop: garante que todo o hero (título, subtítulo, CTAs, métricas e
+   visual) apareça na primeira dobra ao abrir o site. Mobile fica como está. */
+@media (min-width: 1081px) {
+  #site .s-hero { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; }
+  #site .s-hero__grid { width: 100%; padding-top: clamp(24px, 3.5vh, 48px); padding-bottom: clamp(24px, 3.5vh, 48px); }
+}
+/* Telas baixas (notebooks): compacta ainda mais para caber sem rolagem. */
+@media (min-width: 1081px) and (max-height: 780px) {
+  #site .s-hero__title { font-size: clamp(2rem, 3.2vw, 2.8rem); }
+  #site .s-hero__title .thin { margin-top: 12px; }
+  #site .s-hero__tag { margin-bottom: 18px; }
+  #site .s-hero__meta { margin-top: 22px; padding-top: 18px; gap: 16px 34px; }
+  #site .s-hero__meta div .n { font-size: 1.6rem; }
+  #site .s-hero__frame { min-height: 380px; }
 }
 
 /* hero visual panel */
